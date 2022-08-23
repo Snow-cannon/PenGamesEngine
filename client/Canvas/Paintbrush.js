@@ -72,7 +72,7 @@ export class Paintbrush {
      * 
      * @param {String} color 
      */
-    setBackgroundColor(color) {
+    set backdrop(color) {
         this.background = color;
     }
 
@@ -91,16 +91,49 @@ export class Paintbrush {
     }
 
     /**
-     * Takes in a draw function and draws it on the canvas as
+     * Takes in a draw function and a project instance and draws it on the canvas as
      * if the canvas was scaled to the proper dimensions
      * 
-     * @param {function(CanvasRenderingContext2D):void} func 
+     * @param {function(CanvasRenderingContext2D,any):void} func
+     * @param {any} project
      */
-    draw(func) {
+    draw(func, project) {
         this.ctx.save();
         this.ctx.scale(this.scale.x, this.scale.y);
-        func(this.ctx);
+        this.clearStage();
+        func(this.ctx, project);
         this.ctx.restore();
     }
 
+    /**
+     * Returns a point scaled to the canvas
+     * 
+     * @param {number} x 
+     * @param {number} y
+     * @returns {object.<x, y>} { x: number, y: number }
+     */
+    scalePoint(x, y) {
+        return { x: this.scaleX(x), y: this.scaleY(y) };
+    }
+
+    /**
+     * Returns a number scaled by the x scale
+     * 
+     * @param {number} x 
+     * @returns {number}
+     */
+    scaleX(x) {
+        return x / this.scale.x;
+    }
+
+
+    /**
+     * Returns a number scaled by the y scale
+     * 
+     * @param {number} y 
+     * @returns {number}
+     */
+    scaleY(y) {
+        return y / this.scale.y;
+    }
 }

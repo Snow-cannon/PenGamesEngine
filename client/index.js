@@ -1,7 +1,5 @@
-import { AnimateCanvas } from "./Canvas/animate.js";
-import { CanvasEvents } from "./Canvas/CanvasEvents.js";
-import { rgbProp } from "./Canvas/CanvasTools.js";
-import { Paintbrush } from "./Canvas/Paintbrush.js";
+import { dragger } from "./Game/Dragger.js";
+import { Game } from "./Game/Game.js";
 
 const stage = document.getElementById('stage');
 
@@ -20,6 +18,8 @@ function resizeStage(width, height) {
         stage.setAttribute('width', width * 0.75 + 'px');
         stage.setAttribute('height', width * 0.75 + 'px');
     }
+    if(stage.clientWidth < 100){ stage.setAttribute('width', '100px'); }
+    if(stage.clientHeight < 100){ stage.setAttribute('height', '100px'); }
 }
 
 //Change the canvas size on window resize
@@ -28,22 +28,6 @@ window.addEventListener('resize', () => {
 });
 resizeStage(window.innerWidth, window.innerHeight);
 
-//Initialize the canvas size
-const paintbrush = new Paintbrush(stage, 100, 100);
-
-//Initialize event listeners
-const events = new CanvasEvents(stage);
-
-//Initialize animations and the draw function
-const stageAnimator = new AnimateCanvas(stage, (ctx, delta) => {
-    paintbrush.draw(() => {
-        paintbrush.clearStage();
-        ctx.fillStyle = rgbProp('55BB66');
-        ctx.fillRect(1, 2, 2, 2);
-        ctx.fillStyle = rgbProp('1111FF');
-        ctx.fillRect(events.x - 5, events.y - 5, 10, 10);
-    });
-});
-
-//Start the animation
-stageAnimator.startAnimation();
+let game = new Game(stage, 100, 100);
+game.setProject(dragger);
+game.begin();
