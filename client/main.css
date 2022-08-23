@@ -1,0 +1,12 @@
+body {
+    background: rgb(219, 195, 158);
+    overflow: hidden;
+}
+
+.title-bar {
+    background-color: rgb(242, 242, 242);
+}
+
+.stage {
+    background-color: white;
+}
